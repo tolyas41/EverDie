@@ -8,6 +8,17 @@
 
 class AEverDiePlayer;
 
+UENUM()
+enum CharDirections
+{
+	Left	UMETA(DisplayName = "Left"),
+	Up		UMETA(DisplayName = "Up"),
+	Right	UMETA(DisplayName = "Right"),
+	Down	UMETA(DisplayName = "Down"),
+	None	UMETA(DisplayName = "None")
+};
+
+
 UCLASS()
 class EVERDIE_API AEverDiePlayerController : public APlayerController
 {
@@ -32,4 +43,13 @@ protected:
 	FVector MoveToLocation;
 	float MovementSpeed = 3.f;
 	bool CursorPressed = false;
+
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SwitchMovementAnim(CharDirections direction);
+	UFUNCTION(BlueprintImplementableEvent)
+	void SwitchIdleAnim();
+
+	void CheckCharDirection(float angle);
+	CharDirections CharDirection;
 };

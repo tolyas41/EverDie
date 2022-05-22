@@ -36,6 +36,11 @@ void AEverDiePlayerController::Tick(float DeltaTime)
 		MoveToLocation.Normalize();
 
 		ControlledPlayer->AddActorWorldOffset(MoveToLocation * MovementSpeed);
+		float angle = FMath::Atan2(MoveToLocation.X, MoveToLocation.Z);
+		CheckCharDirection(angle);
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%s"), *MoveToLocation.ToString()));
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%f"), angle));
+		CharDirection = CharDirections::None;
 	}
 }
 
@@ -59,6 +64,44 @@ void AEverDiePlayerController::MoveToCursorPressed()
 void AEverDiePlayerController::MoveToCursorReleased()
 {
 	CursorPressed = false;
+	SwitchIdleAnim();
+}
+
+void AEverDiePlayerController::CheckCharDirection(float angle)
+{
+	if (angle > -0.8f && angle < 0.8f)
+	{
+		if (CharDirection != CharDirections::Up)
+		{
+			CharDirection = CharDirections::Up;
+			SwitchMovementAnim(CharDirection);
+		}
+	}
+	if (angle > 0.8f && angle < 2.4f)
+	{
+		if (CharDirection != CharDirections::Right)
+		{
+			CharDirection = CharDirections::Right;
+			SwitchMovementAnim(CharDirection);
+		}
+	}
+	if (angle > 2.4f || angle < -2.4f)
+	{
+		if (CharDirection != CharDirections::Down)
+		{
+			CharDirection = CharDirections::Down;
+			SwitchMovementAnim(CharDirection);
+		}
+	}
+	if (angle > -2.4 && angle < -0.8f)
+	{
+		if (CharDirection != CharDirections::Left)
+		{
+			CharDirection = CharDirections::Left;
+			SwitchMovementAnim(CharDirection);
+		}
+	}
+
 }
 
 void AEverDiePlayerController::SomeTestAction()
