@@ -22,10 +22,10 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void Attack();
-	UFUNCTION(BlueprintImplementableEvent)
-	void SpecialAttack();
+	//UFUNCTION(BlueprintImplementableEvent)
+	//void Attack();
+	//UFUNCTION(BlueprintImplementableEvent)
+	//void SpecialAttack();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	int32 Ammo;
