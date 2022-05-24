@@ -37,16 +37,18 @@ protected:
 	AEverDiePlayer *ControlledPlayer;
 
 	void SomeTestAction(); //TEST
-	void MoveToCursorPressed();
-	void MoveToCursorReleased();
+	void RotateToCursorPressed();
+	void RotateToCursorReleased();
+	void MoveRight(float value);
+	void MoveDown(float value);
 
-	FVector MoveToLocation;
+	FVector RotateToLocation;
 	float MovementSpeed = 3.f;
 	bool CursorPressed = false;
 
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void SwitchMovementAnim(CharDirections direction);
+	void AttackAction(CharDirections direction);
 	UFUNCTION(BlueprintImplementableEvent)
 	void SwitchIdleAnim();
 
