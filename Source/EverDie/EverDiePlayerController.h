@@ -9,7 +9,7 @@
 class AEverDiePlayer;
 
 UENUM()
-enum CharDirections
+enum AnimDirections
 {
 	Left	UMETA(DisplayName = "Left"),
 	Up		UMETA(DisplayName = "Up"),
@@ -40,18 +40,19 @@ protected:
 	void RotateToCursorPressed();
 	void RotateToCursorReleased();
 	void MoveRight(float value);
-	void MoveDown(float value);
+	void MoveUp(float value);
 
 	FVector RotateToLocation;
 	float MovementSpeed = 3.f;
 	bool CursorPressed = false;
-
+	bool isMoving = false;
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void AttackAction(CharDirections direction);
+	void AttackAction(AnimDirections direction);
 	UFUNCTION(BlueprintImplementableEvent)
-	void SwitchIdleAnim();
+	void MovementAction(AnimDirections direction);
 
-	void CheckCharDirection(float angle);
-	CharDirections CharDirection;
+	void CheckAttackDirection(float angle);
+	AnimDirections AttackDirection;
+	AnimDirections MoveDirection;
 };

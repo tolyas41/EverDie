@@ -35,8 +35,12 @@ void AEverDiePlayerController::Tick(float DeltaTime)
 
 		//ControlledPlayer->AddActorWorldOffset(RotateToLocation * MovementSpeed);
 		float angle = FMath::Atan2(RotateToLocation.X, RotateToLocation.Z);
-		CheckCharDirection(angle);
-		CharDirection = CharDirections::None;
+		CheckAttackDirection(angle);
+		AttackDirection = AnimDirections::None;
+	}
+	if (isMoving)
+	{
+		MovementAction(MoveDirection);
 	}
 }
 
@@ -45,9 +49,9 @@ void AEverDiePlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 	InputComponent->BindAction("Attack", IE_Pressed, this, &AEverDiePlayerController::RotateToCursorPressed);
 	InputComponent->BindAction("Attack", IE_Released, this, &AEverDiePlayerController::RotateToCursorReleased);
-	InputComponent->BindAxis("MoveRight", this, &AEverDiePlayerController::MoveRight);
-	InputComponent->BindAxis("MoveDown", this, &AEverDiePlayerController::MoveDown);
 	InputComponent->BindAction("Action", IE_Pressed, this, &AEverDiePlayerController::SomeTestAction);
+	InputComponent->BindAxis("MoveRight", this, &AEverDiePlayerController::MoveRight);
+	InputComponent->BindAxis("MoveUp", this, &AEverDiePlayerController::MoveUp);
 }
 
 
@@ -59,54 +63,59 @@ void AEverDiePlayerController::RotateToCursorPressed()
 void AEverDiePlayerController::RotateToCursorReleased()
 {
 	CursorPressed = false;
-	SwitchIdleAnim();
 }
 
 void AEverDiePlayerController::MoveRight(float value)
 {
-	ControlledPlayer->AddActorWorldOffset(FVector(1.f, 0.f, 0.f) * value * MovementSpeed);
+	if (value != 0)
+	{
+		isMoving = true;
+		MoveDirection = (value > 0) ? AnimDirections::Right : AnimDirections::Left;
+		ControlledPlayer->AddActorWorldOffset(FVector(1.f, 0.f, 0.f) * value * MovementSpeed);
+	}
 }
 
-void AEverDiePlayerController::MoveDown(float value)
+void AEverDiePlayerController::MoveUp(float value)
 {
-	ControlledPlayer->AddActorWorldOffset(FVector(0.f, 0.f, 1.f) * value * MovementSpeed);
+	if (value != 0)
+	{
+		isMoving = true;
+		MoveDirection = (value > 0) ? AnimDirections::Up : AnimDirections::Down;
+		ControlledPlayer->AddActorWorldOffset(FVector(0.f, 0.f, 1.f) * value * MovementSpeed);
+	}
 }
 
-void AEverDiePlayerController::CheckCharDirection(float angle)
+void AEverDiePlayerController::CheckAttackDirection(float angle)
 {
 	if (angle > -0.8f && angle < 0.8f)
 	{
-		if (CharDirection != CharDirections::Up)
+		if (AttackDirection != AnimDirections::Up)
 		{
-			CharDirection = CharDirections::Up;
-			AttackAction(CharDirection);
+			AttackDirection = AnimDirections::Up;
 		}
 	}
 	if (angle > 0.8f && angle < 2.4f)
 	{
-		if (CharDirection != CharDirections::Right)
+		if (AttackDirection != AnimDirections::Right)
 		{
-			CharDirection = CharDirections::Right;
-			AttackAction(CharDirection);
+			AttackDirection = AnimDirections::Right;
 		}
 	}
 	if (angle > 2.4f || angle < -2.4f)
 	{
-		if (CharDirection != CharDirections::Down)
+		if (AttackDirection != AnimDirections::Down)
 		{
-			CharDirection = CharDirections::Down;
-			AttackAction(CharDirection);
+			AttackDirection = AnimDirections::Down;
 		}
 	}
 	if (angle > -2.4 && angle < -0.8f)
 	{
-		if (CharDirection != CharDirections::Left)
+		if (AttackDirection != AnimDirections::Left)
 		{
-			CharDirection = CharDirections::Left;
-			AttackAction(CharDirection);
+			AttackDirection = AnimDirections::Left;
 		}
 	}
-
+	AttackAction(AttackDirection);
 }
 
 void AEverDiePlayerController::SomeTestAction()
