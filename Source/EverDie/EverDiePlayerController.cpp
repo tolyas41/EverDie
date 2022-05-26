@@ -38,9 +38,13 @@ void AEverDiePlayerController::Tick(float DeltaTime)
 		CheckAttackDirection(angle);
 		AttackDirection = AnimDirections::None;
 	}
-	if (isMoving)
+	if (isMovingRightLeft || isMovingUpDown && !CursorPressed)
 	{
 		MovementAction(MoveDirection);
+	}
+	if (!isMovingRightLeft && !isMovingUpDown && !CursorPressed)
+	{
+		IdleAnimation(MoveDirection);
 	}
 }
 
@@ -69,20 +73,22 @@ void AEverDiePlayerController::MoveRight(float value)
 {
 	if (value != 0)
 	{
-		isMoving = true;
 		MoveDirection = (value > 0) ? AnimDirections::Right : AnimDirections::Left;
 		ControlledPlayer->AddActorWorldOffset(FVector(1.f, 0.f, 0.f) * value * MovementSpeed);
+		isMovingRightLeft = true;
 	}
+	else isMovingRightLeft = false;
 }
 
 void AEverDiePlayerController::MoveUp(float value)
 {
 	if (value != 0)
 	{
-		isMoving = true;
 		MoveDirection = (value > 0) ? AnimDirections::Up : AnimDirections::Down;
 		ControlledPlayer->AddActorWorldOffset(FVector(0.f, 0.f, 1.f) * value * MovementSpeed);
+		isMovingUpDown = true;
 	}
+	else isMovingUpDown = false;
 }
 
 void AEverDiePlayerController::CheckAttackDirection(float angle)

@@ -45,12 +45,15 @@ protected:
 	FVector RotateToLocation;
 	float MovementSpeed = 3.f;
 	bool CursorPressed = false;
-	bool isMoving = false;
+	bool isMovingRightLeft = false;
+	bool isMovingUpDown = false;
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void AttackAction(AnimDirections direction);
 	UFUNCTION(BlueprintImplementableEvent)
 	void MovementAction(AnimDirections direction);
+	UFUNCTION(BlueprintImplementableEvent)
+	void IdleAnimation(AnimDirections direction);
 
 	void CheckAttackDirection(float angle);
 	AnimDirections AttackDirection;
