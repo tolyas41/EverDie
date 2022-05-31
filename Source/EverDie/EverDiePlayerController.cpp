@@ -30,21 +30,19 @@ void AEverDiePlayerController::Tick(float DeltaTime)
 		FHitResult CursorHit;
 		GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 		RotateToLocation = CursorHit.Location - ControlledPlayer->GetActorLocation();
-		//RotateToLocation.Y = 0;
 		RotateToLocation.Normalize();
 
-		//ControlledPlayer->AddActorWorldOffset(RotateToLocation * MovementSpeed);
 		float angle = FMath::Atan2(RotateToLocation.X, RotateToLocation.Z);
 		CheckAttackDirection(angle);
 		AttackDirection = AnimDirections::None;
 	}
-	if (isMovingRightLeft || isMovingUpDown /*&& !CursorPressed*/)
+	if (isMovingRightLeft || isMovingUpDown)
 	{
-		MovementAction(MoveDirection);
+		MovementAnimation(MoveDirection);
 	}
-	if (!isMovingRightLeft && !isMovingUpDown /*&& !CursorPressed*/)
+	if (!isMovingRightLeft && !isMovingUpDown)
 	{
-		IdleAnimation(MoveDirection);
+		IdleAnimation();
 	}
 }
 

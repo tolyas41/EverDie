@@ -51,9 +51,9 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void AttackAction(AnimDirections direction);
 	UFUNCTION(BlueprintImplementableEvent)
-	void MovementAction(AnimDirections direction);
+	void MovementAnimation(AnimDirections direction);
 	UFUNCTION(BlueprintImplementableEvent)
-	void IdleAnimation(AnimDirections direction);
+	void IdleAnimation();
 
 	void CheckAttackDirection(float angle);
 	AnimDirections AttackDirection;
