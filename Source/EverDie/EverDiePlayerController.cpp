@@ -38,11 +38,11 @@ void AEverDiePlayerController::Tick(float DeltaTime)
 		CheckAttackDirection(angle);
 		AttackDirection = AnimDirections::None;
 	}
-	if (isMovingRightLeft || isMovingUpDown && !CursorPressed)
+	if (isMovingRightLeft || isMovingUpDown /*&& !CursorPressed*/)
 	{
 		MovementAction(MoveDirection);
 	}
-	if (!isMovingRightLeft && !isMovingUpDown && !CursorPressed)
+	if (!isMovingRightLeft && !isMovingUpDown /*&& !CursorPressed*/)
 	{
 		IdleAnimation(MoveDirection);
 	}
