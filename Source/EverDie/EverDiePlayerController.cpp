@@ -35,6 +35,12 @@ void AEverDiePlayerController::Tick(float DeltaTime)
 		float angle = FMath::Atan2(RotateToLocation.X, RotateToLocation.Z);
 		CheckAttackDirection(angle);
 		AttackDirection = AnimDirections::None;
+
+		if (MovementSpeedModifier == 1.f)
+		{
+			MovementSpeedModifier = ControlledPlayer->GetWeaponMovementSlowing();
+			GetWorldTimerManager().SetTimer(TH_SlowMovementOnAttack, this, &AEverDiePlayerController::AttackSlowRestore, 1.0f);
+		}
 	}
 	if (isMovingRightLeft || isMovingUpDown)
 	{
@@ -72,7 +78,7 @@ void AEverDiePlayerController::MoveRight(float value)
 	if (value != 0)
 	{
 		MoveDirection = (value > 0) ? AnimDirections::Right : AnimDirections::Left;
-		ControlledPlayer->AddActorWorldOffset(FVector(1.f, 0.f, 0.f) * value * MovementSpeed);
+		ControlledPlayer->AddActorWorldOffset(FVector(1.f, 0.f, 0.f) * value * MovementSpeed * MovementSpeedModifier);
 		isMovingRightLeft = true;
 	}
 	else isMovingRightLeft = false;
@@ -83,7 +89,7 @@ void AEverDiePlayerController::MoveUp(float value)
 	if (value != 0)
 	{
 		MoveDirection = (value > 0) ? AnimDirections::Up : AnimDirections::Down;
-		ControlledPlayer->AddActorWorldOffset(FVector(0.f, 0.f, 1.f) * value * MovementSpeed);
+		ControlledPlayer->AddActorWorldOffset(FVector(0.f, 0.f, 1.f) * value * MovementSpeed * MovementSpeedModifier);
 		isMovingUpDown = true;
 	}
 	else isMovingUpDown = false;
@@ -121,6 +127,12 @@ void AEverDiePlayerController::CheckAttackDirection(float angle)
 	}
 	AttackAction(AttackDirection);
 }
+
+void AEverDiePlayerController::AttackSlowRestore()
+{
+	MovementSpeedModifier = 1.f;
+}
+
 
 void AEverDiePlayerController::SomeTestAction()
 {

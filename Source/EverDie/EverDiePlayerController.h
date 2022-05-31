@@ -44,10 +44,13 @@ protected:
 
 	FVector RotateToLocation;
 	float MovementSpeed = 3.f;
+	float MovementSpeedModifier = 1.f;
 	bool CursorPressed = false;
 	bool isMovingRightLeft = false;
 	bool isMovingUpDown = false;
+	FTimerHandle TH_SlowMovementOnAttack;
 
+	void AttackSlowRestore();
 	UFUNCTION(BlueprintImplementableEvent)
 	void AttackAction(AnimDirections direction);
 	UFUNCTION(BlueprintImplementableEvent)

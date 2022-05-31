@@ -6,7 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "BaseWeapon.generated.h"
 
-class AEverDiePlayer;
 
 UCLASS()
 class EVERDIE_API ABaseWeapon : public AActor
@@ -29,11 +28,13 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	int32 Ammo;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters")
 	float ProjectileSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters")
+	float AttackRate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters")
+	float MovementSlowing;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-	AEverDiePlayer *OwningPlayer;
 
 
 };

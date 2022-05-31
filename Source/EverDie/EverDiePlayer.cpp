@@ -2,6 +2,7 @@
 
 
 #include "EverDiePlayer.h"
+#include "BaseWeapon.h"
 
 AEverDiePlayer::AEverDiePlayer()
 {
@@ -26,4 +27,18 @@ void AEverDiePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
+float AEverDiePlayer::GetWeaponMovementSlowing()
+{
+	if (EquippedWeapon)
+	{
+		return EquippedWeapon->MovementSlowing;
+	}
+	else
+	{
+		return 1.f;
+	}
+
+}
+
 
