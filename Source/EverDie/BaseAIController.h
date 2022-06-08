@@ -13,5 +13,8 @@ UCLASS()
 class EVERDIE_API ABaseAIController : public AAIController
 {
 	GENERATED_BODY()
-	
+
+protected:
+
+	virtual void BeginPlay() override;
 };
