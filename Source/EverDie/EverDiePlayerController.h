@@ -36,15 +36,18 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	AEverDiePlayer *ControlledPlayer;
 
-	void SomeTestAction(); //TEST
 	void RotateToCursorPressed();
 	void RotateToCursorReleased();
 	void MoveRight(float value);
 	void MoveUp(float value);
+	void SprintModeOn();
+	void SprintModeOff();
+
 
 	FVector RotateToLocation;
 	float MovementSpeed = 3.f;
 	float MovementSpeedModifier = 1.f;
+	float SprintModifier = 1.f;
 	bool CursorPressed = false;
 	bool isMovingRightLeft = false;
 	bool isMovingUpDown = false;

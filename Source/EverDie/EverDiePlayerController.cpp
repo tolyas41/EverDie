@@ -57,7 +57,8 @@ void AEverDiePlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 	InputComponent->BindAction("Attack", IE_Pressed, this, &AEverDiePlayerController::RotateToCursorPressed);
 	InputComponent->BindAction("Attack", IE_Released, this, &AEverDiePlayerController::RotateToCursorReleased);
-	InputComponent->BindAction("Action", IE_Pressed, this, &AEverDiePlayerController::SomeTestAction);
+	InputComponent->BindAction("Sprint", IE_Pressed, this, &AEverDiePlayerController::SprintModeOn);
+	InputComponent->BindAction("Sprint", IE_Released, this, &AEverDiePlayerController::SprintModeOff);
 	InputComponent->BindAxis("MoveRight", this, &AEverDiePlayerController::MoveRight);
 	InputComponent->BindAxis("MoveUp", this, &AEverDiePlayerController::MoveUp);
 }
@@ -78,7 +79,7 @@ void AEverDiePlayerController::MoveRight(float value)
 	if (value != 0)
 	{
 		MoveDirection = (value > 0) ? AnimDirections::Right : AnimDirections::Left;
-		ControlledPlayer->AddActorWorldOffset(FVector(1.f, 0.f, 0.f) * value * MovementSpeed * MovementSpeedModifier);
+		ControlledPlayer->AddActorWorldOffset(FVector(1.f, 0.f, 0.f) * value * MovementSpeed * MovementSpeedModifier * SprintModifier);
 		isMovingRightLeft = true;
 	}
 	else isMovingRightLeft = false;
@@ -89,10 +90,22 @@ void AEverDiePlayerController::MoveUp(float value)
 	if (value != 0)
 	{
 		MoveDirection = (value > 0) ? AnimDirections::Up : AnimDirections::Down;
-		ControlledPlayer->AddActorWorldOffset(FVector(0.f, 0.f, 1.f) * value * MovementSpeed * MovementSpeedModifier);
+		ControlledPlayer->AddActorWorldOffset(FVector(0.f, 0.f, 1.f) * value * MovementSpeed * MovementSpeedModifier * SprintModifier);
 		isMovingUpDown = true;
 	}
 	else isMovingUpDown = false;
+}
+
+void AEverDiePlayerController::SprintModeOn()
+{
+	SprintModifier = ControlledPlayer->GetSprintPower();
+	ControlledPlayer->StartStaminaDrain();
+}
+
+void AEverDiePlayerController::SprintModeOff()
+{
+	SprintModifier = 1.f;
+	ControlledPlayer->StartStaminaRestore();
 }
 
 void AEverDiePlayerController::CheckAttackDirection(float angle)
@@ -131,10 +144,4 @@ void AEverDiePlayerController::CheckAttackDirection(float angle)
 void AEverDiePlayerController::AttackSlowRestore()
 {
 	MovementSpeedModifier = 1.f;
-}
-
-
-void AEverDiePlayerController::SomeTestAction()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%s"), *ControlledPlayer->GetName()));
 }
