@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "EverDiePlayer.generated.h"
 
+DECLARE_EVENT(AEverDiePlayer, FStaminaNullEvent)
+
 UCLASS()
 class EVERDIE_API AEverDiePlayer : public APawn
 {
@@ -18,13 +20,13 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float SprintPower = 1.3f;
+	float SprintPower = 1.7f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float MaxStamina = 100.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float StaminaDrainRate = 1.f;
+	float StaminaDrainRate = 3.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float StaminaRestoreRate = 2.f;
+	float StaminaRestoreRate = 4.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float StaminaRestoreDelay = 1.5f;
 	UPROPERTY(BlueprintReadWrite)
@@ -48,4 +50,6 @@ public:
 	float GetSprintPower();
 	void StartStaminaDrain();
 	void StartStaminaRestore();
+
+	FStaminaNullEvent OnStaminaNull;
 };

@@ -19,6 +19,10 @@ void AEverDiePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	ControlledPlayer = Cast<AEverDiePlayer>(GetPawn());
+	if (ControlledPlayer)
+	{
+		ControlledPlayer->OnStaminaNull.AddUFunction(this, FName("ResetSprintModifier"));
+	}
 }
 
 void AEverDiePlayerController::Tick(float DeltaTime)
@@ -104,8 +108,14 @@ void AEverDiePlayerController::SprintModeOn()
 
 void AEverDiePlayerController::SprintModeOff()
 {
-	SprintModifier = 1.f;
+	ResetSprintModifier();
 	ControlledPlayer->StartStaminaRestore();
+}
+
+void AEverDiePlayerController::ResetSprintModifier()
+{
+	SprintModifier = 1.f;
+
 }
 
 void AEverDiePlayerController::CheckAttackDirection(float angle)

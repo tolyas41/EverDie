@@ -42,7 +42,8 @@ protected:
 	void MoveUp(float value);
 	void SprintModeOn();
 	void SprintModeOff();
-
+	UFUNCTION()
+	void ResetSprintModifier();
 
 	FVector RotateToLocation;
 	float MovementSpeed = 3.f;

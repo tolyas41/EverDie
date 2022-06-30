@@ -44,14 +44,14 @@ float AEverDiePlayer::GetWeaponMovementSlowing()
 
 float AEverDiePlayer::GetSprintPower()
 {
-	return SprintPower;
+	return CurrentStamina == 0 ? 1.f : SprintPower;
 }
 
 void AEverDiePlayer::StaminaRestore()
 {
 	if (CurrentStamina < MaxStamina)
 	{
-		CurrentStamina += StaminaRestoreRate;
+		CurrentStamina += FMath::Min(StaminaRestoreRate, MaxStamina - CurrentStamina);
 		OnStaminaChange();
 	}
 }
@@ -60,8 +60,12 @@ void AEverDiePlayer::StaminaDrain()
 {
 	if (CurrentStamina > 0)
 	{
-		CurrentStamina -= StaminaDrainRate;
+		CurrentStamina -= FMath::Min(CurrentStamina, StaminaDrainRate);
 		OnStaminaChange();
+	}
+	else
+	{
+		OnStaminaNull.Broadcast();
 	}
 }
 
@@ -78,5 +82,3 @@ void AEverDiePlayer::StartStaminaRestore()
 	//TH_StartStaminaDrain.Invalidate();
 	GetWorldTimerManager().SetTimer(TH_StartStaminaRestore, this, &AEverDiePlayer::StaminaRestore, 0.05f, true, StaminaRestoreDelay);
 }
-
-
